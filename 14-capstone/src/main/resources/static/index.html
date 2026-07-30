@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>14 - Capstone: Order Management</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; max-height: 280px; }
+  #live-log { display: flex; flex-direction: column-reverse; max-height: 200px; overflow-y: auto; }
+  .event-row { padding: 0.4rem 0.5rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+  .item-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; align-items: center; }
+  .item-row input { width: auto; flex: 1; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 800px) { .grid-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 14 &middot; Capstone: Order Management</h1>
+  <p>Every earlier module, combined: modeling, indexing, querying, aggregation, transactions, validation, and change streams.</p>
+  <p class="links"><a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a></p>
+</header>
+
+<main>
+  <div class="grid-2">
+    <section class="panel">
+      <h2>1. Customers</h2>
+      <div class="row">
+        <label>Name <input type="text" id="c-name"></label>
+        <label>Email <input type="text" id="c-email"></label>
+        <button id="create-customer">Create</button>
+      </div>
+      <table>
+        <thead><tr><th>Id</th><th>Name</th></tr></thead>
+        <tbody id="customer-rows"></tbody>
+      </table>
+    </section>
+
+    <section class="panel">
+      <h2>2. Products (indexed catalog)</h2>
+      <div class="row">
+        <label>SKU <input type="text" id="p-sku"></label>
+        <label>Name <input type="text" id="p-name"></label>
+        <label>Description <input type="text" id="p-description"></label>
+        <label>Category <input type="text" id="p-category"></label>
+        <label>Price <input type="number" id="p-price" step="0.01"></label>
+        <label>Stock <input type="number" id="p-stock"></label>
+        <button id="create-product">Create</button>
+      </div>
+      <div class="row">
+        <label>Search category <input type="text" id="s-category"></label>
+        <label>Max price <input type="number" id="s-maxprice" step="0.01"></label>
+        <button id="search-btn">Search</button>
+        <button class="secondary" id="refresh-products">Refresh all</button>
+      </div>
+      <table>
+        <thead><tr><th>Id</th><th>SKU</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th></tr></thead>
+        <tbody id="product-rows"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>3. Place an order (transactional, atomic stock decrement)</h2>
+    <div class="row">
+      <label>Customer
+        <select id="o-customer"></select>
+      </label>
+    </div>
+    <div id="item-rows"></div>
+    <button class="secondary" id="add-item">+ Add item</button>
+    <button id="place-order">Place order</button>
+    <p class="hint">If any item's requested quantity exceeds its stock, the whole order is rejected and any earlier items' stock decrements in the same request are rolled back - nothing partially applies.</p>
+    <p id="order-error" class="error"></p>
+  </section>
+
+  <div class="grid-2">
+    <section class="panel">
+      <h2>4. Live order feed (change stream)</h2>
+      <p>Status: <span id="conn-status">connecting...</span></p>
+      <div id="live-log"></div>
+    </section>
+
+    <section class="panel">
+      <h2>5. Reports (aggregation)</h2>
+      <div class="row">
+        <button id="btn-top-products">Top products</button>
+        <button id="btn-revenue-status">Revenue by status</button>
+      </div>
+      <pre id="report-output">Pick a report.</pre>
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>Orders</h2>
+    <button class="secondary" id="refresh-orders">Refresh</button>
+    <pre id="orders-output">[]</pre>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

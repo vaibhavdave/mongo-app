@@ -38,7 +38,7 @@ Docker Compose.
 | 11 | [Change Streams & Reactive](11-change-streams-reactive/) | ✅ available | Change streams, `ReactiveMongoRepository` + WebFlux |
 | 12 | [Security](12-security/) | ✅ available | Authentication (SCRAM), roles/users, field-level encryption overview |
 | 13 | [Testing](13-testing/) | ✅ available | Testcontainers-based integration tests (three testing tiers) |
-| 14 | Capstone | planned | A realistic app combining everything above |
+| 14 | [Capstone](14-capstone/) | ✅ available | A realistic app combining everything above |
 
 ## Suggested pace
 
