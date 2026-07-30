@@ -1,0 +1,28 @@
+# For running the app manually via its UI/REST API. The test suite
+# (src/test/java) does NOT use this - it starts its own throwaway MongoDB
+# via Testcontainers, independent of whatever is or isn't running here.
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: testing-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - testing_mongo_data:/data/db
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express:1.0
+    container_name: testing-mongo-express
+    depends_on:
+      - mongodb
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH: "false"
+    restart: unless-stopped
+
+volumes:
+  testing_mongo_data:

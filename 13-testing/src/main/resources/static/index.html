@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>13 - Testing</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 13 &middot; Testing</h1>
+  <p>The real content of this module is <code>src/test/java</code> - this UI is just for manually poking at the same app the tests cover.</p>
+  <p class="links"><a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a></p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>Seed / browse products</h2>
+    <div class="row">
+      <label>Name <input type="text" id="p-name"></label>
+      <label>Category <input type="text" id="p-category"></label>
+      <label>Price <input type="number" id="p-price" step="0.01"></label>
+      <label>Stock <input type="number" id="p-stock"></label>
+      <button id="create-btn">Create</button>
+    </div>
+    <div class="row">
+      <label>In-stock search, category <input type="text" id="q-category"></label>
+      <button id="search-btn">Search</button>
+      <button class="secondary" id="refresh-btn">Refresh all</button>
+    </div>
+    <pre id="output">[]</pre>
+  </section>
+
+  <section class="panel">
+    <h2>Run the test suite</h2>
+    <p class="hint">From this module's directory: <code>./mvnw test</code> - runs all three tiers (see README): a @WebMvcTest slice (no database at all), a @DataMongoTest slice, and a full @SpringBootTest, the latter two against a real throwaway MongoDB started automatically by Testcontainers. Requires Docker to be reachable.</p>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
