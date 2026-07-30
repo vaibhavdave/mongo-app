@@ -28,7 +28,7 @@ Docker Compose.
 | 01 | [Foundations](01-foundations/) | ✅ available | Docker Mongo setup, `@Document`/`@Id` mapping, `MongoRepository` CRUD, derived queries |
 | 02 | [Querying Deep Dive](02-querying/) | ✅ available | `MongoTemplate`, `Criteria` API, projections, sorting, pagination, update operators |
 | 03 | [Data Modeling](03-data-modeling/) | ✅ available | Embedding vs. referencing, one-to-many/many-to-many, `DBRef`, polymorphic documents |
-| 04 | Indexing & Performance | planned | Single/compound/multikey/text/TTL indexes, `.explain()`, covered queries |
+| 04 | [Indexing & Performance](04-indexing/) | ✅ available | Single/compound/unique/text/TTL indexes, `.explain()` |
 | 05 | Aggregation Framework | planned | `$match`, `$group`, `$project`, `$lookup`, `$unwind`, `$facet`, `$bucket` |
 | 06 | Transactions & Consistency | planned | Multi-document ACID transactions, `@Transactional`, read/write concerns, optimistic locking |
 | 07 | Schema Validation | planned | Collection-level JSON Schema validation, Bean Validation, custom converters |
