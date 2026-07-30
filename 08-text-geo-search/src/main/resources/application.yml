@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 08-text-geo-search
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/textgeo_db
+      auto-index-creation: true
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
