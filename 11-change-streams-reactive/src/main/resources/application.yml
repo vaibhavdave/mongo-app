@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 11-change-streams-reactive
+  data:
+    mongodb:
+      # Change streams, like transactions (module 06), are only available
+      # against a replica set - they're built on the oplog, which a
+      # standalone mongod doesn't maintain.
+      uri: mongodb://localhost:27017/changestreams_db?replicaSet=rs0
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.ReactiveMongoTemplate: DEBUG

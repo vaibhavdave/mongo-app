@@ -1,0 +1,47 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: changestreams-mongodb
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27017:27017"
+    volumes:
+      - changestreams_mongo_data:/data/db
+    healthcheck:
+      test: echo "db.adminCommand('ping')" | mongosh --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  # Change streams only work against a replica set (even a single-node
+  # one) - they're built on the oplog, which a plain standalone mongod
+  # doesn't maintain. This one-shot container runs rs.initiate() once,
+  # then exits; the app's change stream can't open until this has
+  # completed.
+  mongo-rs-init:
+    image: mongo:7.0
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    volumes:
+      - ./mongo-init:/mongo-init
+    command: >
+      mongosh --host mongodb:27017 /mongo-init/init-replica-set.js
+    restart: "no"
+
+  mongo-express:
+    image: mongo-express:1.0
+    container_name: changestreams-mongo-express
+    depends_on:
+      - mongodb
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH: "false"
+    restart: unless-stopped
+
+volumes:
+  changestreams_mongo_data:
