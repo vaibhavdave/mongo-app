@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>06 - Transactions & Consistency</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 06 &middot; Transactions &amp; Consistency</h1>
+  <p>Multi-document ACID transactions (@Transactional) vs. no transaction, and optimistic locking with @Version.</p>
+  <p class="links"><a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a></p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>1. Accounts</h2>
+    <div class="row">
+      <label>Owner <input type="text" id="a-owner"></label>
+      <label>Starting balance <input type="number" id="a-balance" value="100" step="0.01"></label>
+      <button id="create-account">Create account</button>
+      <button class="secondary" id="refresh-accounts">Refresh</button>
+    </div>
+    <table>
+      <thead><tr><th>Id</th><th>Owner</th><th>Balance</th><th>Version</th></tr></thead>
+      <tbody id="account-rows"></tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>2. Transfer money - transactional vs. not</h2>
+    <div class="row">
+      <label>From account id <input type="text" id="t-from"></label>
+      <label>To account id <input type="text" id="t-to"></label>
+      <label>Amount <input type="number" id="t-amount" value="10" step="0.01"></label>
+      <label class="checkbox"><input type="checkbox" id="t-simulate"> Simulate failure after debit</label>
+    </div>
+    <div class="row">
+      <button id="transfer-safe">Transfer (transactional)</button>
+      <button class="secondary" id="transfer-unsafe">Transfer (no transaction)</button>
+    </div>
+    <p class="hint">Check the "simulate failure" box, run the unsafe transfer, then refresh accounts - the source lost money with no credit anywhere. Do the same with the transactional transfer - balances are unchanged (rolled back).</p>
+    <pre id="transfer-output"></pre>
+  </section>
+
+  <section class="panel">
+    <h2>3. Inventory (optimistic locking)</h2>
+    <div class="row">
+      <label>SKU <input type="text" id="i-sku"></label>
+      <label>Starting stock <input type="number" id="i-stock" value="10"></label>
+      <button id="create-item">Create item</button>
+      <button class="secondary" id="refresh-items">Refresh</button>
+    </div>
+    <table>
+      <thead><tr><th>Id</th><th>SKU</th><th>Stock</th><th>Version</th></tr></thead>
+      <tbody id="item-rows"></tbody>
+    </table>
+    <div class="row" style="margin-top:0.75rem">
+      <label>Item id <input type="text" id="i-id"></label>
+      <button id="simulate-conflict">Simulate concurrent write conflict</button>
+      <button class="secondary" id="reserve-retry">Reserve 1 with retry</button>
+    </div>
+    <pre id="inventory-output"></pre>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

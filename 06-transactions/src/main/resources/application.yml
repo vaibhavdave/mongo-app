@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 06-transactions
+  data:
+    mongodb:
+      # replicaSet=rs0 is required: the driver refuses to start a
+      # multi-document transaction against a standalone (non-replica-set)
+      # server.
+      uri: mongodb://localhost:27017/transactions_db?replicaSet=rs0
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    org.springframework.transaction: DEBUG
