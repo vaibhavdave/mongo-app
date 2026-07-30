@@ -1,0 +1,36 @@
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: security-mongodb
+    environment:
+      # Root user, used only for administration (and by Mongo Express
+      # below to browse everything) - the app itself never uses these
+      # credentials, see mongo-init/init-app-user.js.
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpass123
+    ports:
+      - "27017:27017"
+    volumes:
+      - security_mongo_data:/data/db
+      # The official image runs every *.js file here automatically, once,
+      # authenticated as root, the first time the data directory is empty.
+      - ./mongo-init:/docker-entrypoint-initdb.d
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express:1.0
+    container_name: security-mongo-express
+    depends_on:
+      - mongodb
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_ADMINUSERNAME: root
+      ME_CONFIG_MONGODB_ADMINPASSWORD: rootpass123
+      ME_CONFIG_BASICAUTH: "false"
+    restart: unless-stopped
+
+volumes:
+  security_mongo_data:

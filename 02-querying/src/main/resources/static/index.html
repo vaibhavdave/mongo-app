@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>02 - Querying Deep Dive</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Module 02 &middot; Querying Deep Dive</h1>
+  <p>MongoTemplate, Criteria, pagination, projections, update operators, findAndModify.</p>
+  <p class="links">
+    REST base: <code>/api/products</code> &nbsp;|&nbsp;
+    <a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a>
+  </p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>Seed a product</h2>
+    <form id="product-form">
+      <div class="row">
+        <label>Name <input type="text" id="name" required></label>
+        <label>Category <input type="text" id="category"></label>
+        <label>Price <input type="number" id="price" step="0.01" min="0" required></label>
+        <label>Stock <input type="number" id="stock" min="0" required></label>
+        <label>Tags (comma-separated) <input type="text" id="tags"></label>
+        <button type="submit">Create</button>
+      </div>
+    </form>
+    <p id="form-error" class="error"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Dynamic search (Criteria + pagination)</h2>
+    <div class="row">
+      <label>Category <input type="text" id="s-category"></label>
+      <label>Min price <input type="number" id="s-minprice" step="0.01"></label>
+      <label>Max price <input type="number" id="s-maxprice" step="0.01"></label>
+      <label>Tag <input type="text" id="s-tag"></label>
+      <label>In stock
+        <select id="s-instock">
+          <option value="">any</option>
+          <option value="true">yes</option>
+          <option value="false">no</option>
+        </select>
+      </label>
+      <label>Sort by
+        <select id="s-sortby">
+          <option value="name">name</option>
+          <option value="price">price</option>
+          <option value="stock">stock</option>
+        </select>
+      </label>
+      <label>Direction
+        <select id="s-sortdir">
+          <option value="asc">asc</option>
+          <option value="desc">desc</option>
+        </select>
+      </label>
+      <button id="search-btn">Search</button>
+      <button class="secondary" id="search-clear">Clear</button>
+      <button class="secondary" id="projection-btn">Show name+price projection</button>
+    </div>
+    <div class="pagination">
+      <button class="secondary" id="prev-page">&laquo; Prev</button>
+      <span id="page-info"></span>
+      <button class="secondary" id="next-page">Next &raquo;</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Bulk update</h2>
+    <div class="row">
+      <label>Category <input type="text" id="bulk-category"></label>
+      <button id="bulk-btn">Mark whole category out of stock</button>
+    </div>
+    <p class="hint" id="bulk-result"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Products</h2>
+    <table>
+      <thead><tr><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Tags</th><th>In stock</th><th></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

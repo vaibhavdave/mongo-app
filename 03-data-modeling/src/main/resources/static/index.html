@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>03 - Data Modeling</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+  .item-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .item-row input { width: auto; flex: 1; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 03 &middot; Data Modeling</h1>
+  <p>Embedding (Address, OrderItem) vs. referencing (Order &rarr; Customer, manual + DBRef), polymorphic Payment.</p>
+  <p class="links">
+    <a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a>
+    - inspect a saved order's raw document to see <code>customerId</code> vs <code>customerRef.$id</code> vs the embedded <code>payment._class</code>.
+  </p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>1. Create a customer (embedded address)</h2>
+    <div class="row">
+      <label>Name <input type="text" id="c-name"></label>
+      <label>Email <input type="text" id="c-email"></label>
+      <label>Address type <input type="text" id="c-addr-type" value="HOME"></label>
+      <label>Street <input type="text" id="c-street"></label>
+      <label>City <input type="text" id="c-city"></label>
+      <label>State <input type="text" id="c-state"></label>
+      <label>Zip <input type="text" id="c-zip"></label>
+      <button id="create-customer">Create customer</button>
+    </div>
+    <table>
+      <thead><tr><th>Id</th><th>Name</th><th>Email</th><th>Addresses</th></tr></thead>
+      <tbody id="customer-rows"></tbody>
+    </table>
+  </section>
+
+  <section class="panel">
+    <h2>2. Place an order (manual + DBRef reference, embedded items, polymorphic payment)</h2>
+    <div class="row">
+      <label>Customer
+        <select id="o-customer"></select>
+      </label>
+      <label>Payment type
+        <select id="o-paytype">
+          <option value="credit_card">Credit card</option>
+          <option value="paypal">PayPal</option>
+        </select>
+      </label>
+    </div>
+    <div id="item-rows"></div>
+    <button class="secondary" id="add-item">+ Add item</button>
+    <div class="row" style="margin-top:0.75rem">
+      <div id="pay-fields-credit_card">
+        <label>Card brand <input type="text" id="pay-brand" value="visa"></label>
+        <label>Last 4 <input type="text" id="pay-last4" value="4242"></label>
+      </div>
+      <div id="pay-fields-paypal" hidden>
+        <label>Payer email <input type="text" id="pay-email"></label>
+      </div>
+      <button id="place-order">Place order</button>
+    </div>
+    <p id="order-error" class="error"></p>
+  </section>
+
+  <section class="panel">
+    <h2>3. Orders</h2>
+    <div class="row">
+      <label>Filter by customer id <input type="text" id="filter-customer"></label>
+      <button id="filter-btn">Show orders for customer</button>
+      <button class="secondary" id="show-all">Show all orders</button>
+    </div>
+    <pre id="orders-output">[]</pre>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

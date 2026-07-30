@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>08 - Text & Geo Search</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; max-height: 260px; }
+  svg { border: 1px solid var(--border); border-radius: 8px; background: #11182711; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 08 &middot; Text &amp; Geo Search</h1>
+  <p>2dsphere geospatial queries ($geoNear, $geoWithin) and a text-search recap.</p>
+  <p class="links"><a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a></p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>1. Add a store</h2>
+    <p class="hint">Coordinates are longitude, latitude (in that order - the GeoJSON convention). Try clustering a few stores close together and a couple far away.</p>
+    <div class="row">
+      <label>Name <input type="text" id="s-name"></label>
+      <label>Description <input type="text" id="s-description"></label>
+      <label>Category <input type="text" id="s-category"></label>
+      <label>Longitude <input type="number" id="s-lng" step="0.0001" value="-73.9857"></label>
+      <label>Latitude <input type="number" id="s-lat" step="0.0001" value="40.7484"></label>
+      <button id="create-btn">Create</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>2. Geo queries</h2>
+    <div class="row">
+      <label>Center longitude <input type="number" id="q-lng" step="0.0001" value="-73.9857"></label>
+      <label>Center latitude <input type="number" id="q-lat" step="0.0001" value="40.7484"></label>
+      <label>Distance (km) <input type="number" id="q-km" value="5" step="0.1"></label>
+      <button id="near-btn">$geoNear (sorted, with distance)</button>
+      <button class="secondary" id="within-btn">$geoWithin (circle)</button>
+    </div>
+    <svg id="map" viewBox="0 0 400 400" width="400" height="400"></svg>
+    <pre id="geo-output">Run a query above.</pre>
+  </section>
+
+  <section class="panel">
+    <h2>3. Text search (recap of module 04)</h2>
+    <div class="row">
+      <label>Search words <input type="text" id="text-query"></label>
+      <button id="text-btn">Search</button>
+    </div>
+    <pre id="text-output">[]</pre>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

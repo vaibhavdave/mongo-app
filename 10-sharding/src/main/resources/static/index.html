@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>10 - Sharding</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; max-height: 320px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 10 &middot; Sharding</h1>
+  <p>Shard keys, targeted vs. scatter-gather queries. Mostly conceptual - see the README for the full picture and the optional real cluster.</p>
+  <p class="links"><a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a></p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>1. Seed events</h2>
+    <div class="row">
+      <label>Device id (shard key) <input type="text" id="e-device" value="device-1"></label>
+      <label>Event type <input type="text" id="e-type" value="heartbeat"></label>
+      <label>Payload <input type="text" id="e-payload" value="{}"></label>
+      <button id="create-btn">Create event</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>2. Targeted vs. scatter-gather query</h2>
+    <div class="row">
+      <label>Device id <input type="text" id="q-device" value="device-1"></label>
+      <button id="targeted-btn">Explain: filter by deviceId (targeted)</button>
+    </div>
+    <div class="row">
+      <label>Event type <input type="text" id="q-type" value="heartbeat"></label>
+      <button id="scatter-btn">Explain: filter by eventType (scatter-gather)</button>
+    </div>
+    <pre id="explain-output">Run a query above. Against docker-compose.yml (default, unsharded) both look similar - see docker-compose.sharded.yml in the README for the real difference.</pre>
+  </section>
+
+  <section class="panel">
+    <h2>3. Events</h2>
+    <button class="secondary" id="refresh-btn">Refresh</button>
+    <pre id="events-output">[]</pre>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

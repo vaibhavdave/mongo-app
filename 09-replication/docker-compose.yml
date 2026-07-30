@@ -1,0 +1,68 @@
+services:
+  mongo1:
+    image: mongo:7.0
+    container_name: replication-mongo1
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    ports:
+      - "27017:27017"
+    volumes:
+      - replication_mongo1_data:/data/db
+    healthcheck:
+      test: echo "db.adminCommand('ping')" | mongosh --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  mongo2:
+    image: mongo:7.0
+    container_name: replication-mongo2
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    ports:
+      - "27018:27017"
+    volumes:
+      - replication_mongo2_data:/data/db
+    restart: unless-stopped
+
+  mongo3:
+    image: mongo:7.0
+    container_name: replication-mongo3
+    command: ["--replSet", "rs0", "--bind_ip_all", "--port", "27017"]
+    ports:
+      - "27019:27017"
+    volumes:
+      - replication_mongo3_data:/data/db
+    restart: unless-stopped
+
+  # One-shot: initiates the replica set across all three nodes, then exits.
+  mongo-rs-init:
+    image: mongo:7.0
+    depends_on:
+      mongo1:
+        condition: service_healthy
+      mongo2:
+        condition: service_started
+      mongo3:
+        condition: service_started
+    volumes:
+      - ./mongo-init:/mongo-init
+    command: >
+      mongosh --host mongo1:27017 /mongo-init/init-replica-set.js
+    restart: "no"
+
+  mongo-express:
+    image: mongo-express:1.0
+    container_name: replication-mongo-express
+    depends_on:
+      - mongo-rs-init
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_URL: mongodb://mongo1:27017,mongo2:27017,mongo3:27017/?replicaSet=rs0
+      ME_CONFIG_BASICAUTH: "false"
+    restart: unless-stopped
+
+volumes:
+  replication_mongo1_data:
+  replication_mongo2_data:
+  replication_mongo3_data:

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 04-indexing
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/indexing_db
+      # Off by default in Spring Boot - without this, @Indexed/@CompoundIndex/
+      # @TextIndexed annotations are just documentation and no index is
+      # ever actually created.
+      auto-index-creation: true
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG

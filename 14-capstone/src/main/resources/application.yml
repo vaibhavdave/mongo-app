@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 14-capstone
+  data:
+    mongodb:
+      # replicaSet=rs0 required for both transactions (module 06) and
+      # change streams (module 11), both used here.
+      uri: mongodb://localhost:27017/capstone_db?replicaSet=rs0
+      auto-index-creation: true
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG

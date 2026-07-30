@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 09-replication
+  data:
+    mongodb:
+      # All three replica set members listed - the driver discovers which
+      # one is currently primary on its own and follows it (including
+      # after a failover). replicaSet=rs0 confirms which set we expect to
+      # join, as a safety check.
+      uri: mongodb://localhost:27017,localhost:27018,localhost:27019/replication_db?replicaSet=rs0
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
+    org.mongodb.driver.cluster: INFO
