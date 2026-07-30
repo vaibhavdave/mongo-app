@@ -36,7 +36,7 @@ Docker Compose.
 | 09 | [Replication](09-replication/) | ✅ available | Local 3-node replica set, read preference/write concern, failover |
 | 10 | [Sharding](10-sharding/) | ✅ available | Shard keys, chunk distribution (conceptual + optional local cluster) |
 | 11 | [Change Streams & Reactive](11-change-streams-reactive/) | ✅ available | Change streams, `ReactiveMongoRepository` + WebFlux |
-| 12 | Security | planned | Authentication (SCRAM), roles/users, field-level encryption overview |
+| 12 | [Security](12-security/) | ✅ available | Authentication (SCRAM), roles/users, field-level encryption overview |
 | 13 | Testing | planned | Testcontainers-based integration tests |
 | 14 | Capstone | planned | A realistic app combining everything above |
 

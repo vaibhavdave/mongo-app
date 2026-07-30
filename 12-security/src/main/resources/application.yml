@@ -1,0 +1,19 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 12-security
+  data:
+    mongodb:
+      # Credentials come from environment variables, not a hardcoded
+      # string - the defaults here match docker-compose.yml/mongo-init
+      # purely for convenience running this module locally. In any real
+      # deployment you would not commit even placeholder credentials like
+      # this; they'd come from a secrets manager or deployment-time env
+      # vars only, with no default baked into version control.
+      uri: mongodb://${MONGO_APP_USERNAME:app_user}:${MONGO_APP_PASSWORD:app_pass_change_me}@localhost:27017/security_db?authSource=security_db
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG

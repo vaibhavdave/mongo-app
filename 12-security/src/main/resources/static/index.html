@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>12 - Security</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 12 &middot; Security</h1>
+  <p>Authentication, a least-privilege application user, and seeing that role boundary enforced by MongoDB itself.</p>
+  <p class="links">
+    <a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a>
+    (logs in as root - it needs full access to browse everything; the app never uses root credentials)
+  </p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>1. This app's identity</h2>
+    <p class="hint">This app connects as app_user, not root - see mongo-init/init-app-user.js and application.yml.</p>
+    <button id="whoami-btn">Who am I? (connectionStatus)</button>
+    <pre id="whoami-output"></pre>
+  </section>
+
+  <section class="panel">
+    <h2>2. Least privilege, enforced</h2>
+    <p class="hint">app_user's role only grants readWrite on security_db. This button asks the app to try listing collections in the "admin" database anyway - a real least-privilege boundary, not just a claim.</p>
+    <button id="attempt-btn">Attempt cross-database access</button>
+    <pre id="attempt-output"></pre>
+  </section>
+
+  <section class="panel">
+    <h2>3. Normal app functionality (works fine within app_user's granted scope)</h2>
+    <div class="row">
+      <label>Name <input type="text" id="p-name"></label>
+      <label>Price <input type="number" id="p-price" step="0.01"></label>
+      <button id="create-btn">Create product</button>
+      <button class="secondary" id="refresh-btn">Refresh</button>
+    </div>
+    <pre id="products-output">[]</pre>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
