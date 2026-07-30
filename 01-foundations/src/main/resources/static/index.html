@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>01 - Foundations | Product Catalog</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>Module 01 &middot; Foundations</h1>
+  <p>Basic CRUD over a <code>products</code> collection, via <code>MongoRepository</code>.</p>
+  <p class="links">
+    REST base: <code>/api/products</code> &nbsp;|&nbsp;
+    Raw DB browser: <a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a>
+  </p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2 id="form-title">Add a product</h2>
+    <form id="product-form">
+      <input type="hidden" id="product-id">
+      <label>Name <input type="text" id="name" required></label>
+      <label>Description <input type="text" id="description"></label>
+      <label>Price <input type="number" id="price" step="0.01" min="0" required></label>
+      <label>Category <input type="text" id="category"></label>
+      <label>Tags (comma-separated) <input type="text" id="tags"></label>
+      <label class="checkbox"><input type="checkbox" id="inStock"> In stock</label>
+      <div class="form-actions">
+        <button type="submit" id="submit-btn">Create</button>
+        <button type="button" id="cancel-edit" hidden>Cancel edit</button>
+      </div>
+    </form>
+    <p id="form-error" class="error"></p>
+  </section>
+
+  <section class="panel">
+    <h2>Search / derived queries</h2>
+    <div class="search-row">
+      <label>Category <input type="text" id="search-category" placeholder="e.g. electronics"></label>
+      <label>Max price <input type="number" id="search-maxprice" step="0.01" min="0"></label>
+      <label>Name contains <input type="text" id="search-name" placeholder="e.g. phone"></label>
+      <label class="checkbox"><input type="checkbox" id="search-instock"> In stock only</label>
+      <button id="search-btn">Search</button>
+      <button id="search-clear">Clear</button>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>Products</h2>
+    <table id="product-table">
+      <thead>
+        <tr>
+          <th>Name</th><th>Category</th><th>Price</th><th>Tags</th><th>In stock</th><th>Created</th><th></th>
+        </tr>
+      </thead>
+      <tbody id="product-rows"></tbody>
+    </table>
+    <p id="empty-msg" hidden>No products yet - add one above.</p>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

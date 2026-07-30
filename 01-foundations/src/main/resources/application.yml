@@ -1,0 +1,16 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 01-foundations
+  data:
+    mongodb:
+      # A MongoDB "connection string" - no auth in this module, that's introduced
+      # later once we cover security. Database "foundations_db" is created
+      # automatically the first time a document is written to it.
+      uri: mongodb://localhost:27017/foundations_db
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
