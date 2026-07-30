@@ -26,7 +26,7 @@ Docker Compose.
 | # | Module | Status | Covers |
 |---|--------|--------|--------|
 | 01 | [Foundations](01-foundations/) | ✅ available | Docker Mongo setup, `@Document`/`@Id` mapping, `MongoRepository` CRUD, derived queries |
-| 02 | Querying Deep Dive | planned | `MongoTemplate`, `Criteria` API, projections, sorting, pagination, update operators |
+| 02 | [Querying Deep Dive](02-querying/) | ✅ available | `MongoTemplate`, `Criteria` API, projections, sorting, pagination, update operators |
 | 03 | Data Modeling | planned | Embedding vs. referencing, one-to-many/many-to-many, `DBRef`, polymorphic documents |
 | 04 | Indexing & Performance | planned | Single/compound/multikey/text/TTL indexes, `.explain()`, covered queries |
 | 05 | Aggregation Framework | planned | `$match`, `$group`, `$project`, `$lookup`, `$unwind`, `$facet`, `$bucket` |
