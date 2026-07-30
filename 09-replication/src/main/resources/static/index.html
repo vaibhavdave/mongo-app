@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>09 - Replication</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 09 &middot; Replication</h1>
+  <p>A real 3-node replica set: read preferences, write concerns, and failover.</p>
+  <p class="links"><a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a></p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>1. Replica set status</h2>
+    <button id="status-btn">Check status</button>
+    <pre id="status-output">Click above.</pre>
+  </section>
+
+  <section class="panel">
+    <h2>2. Write with different write concerns</h2>
+    <div class="row">
+      <label>Author <input type="text" id="w-author" value="alice"></label>
+      <label>Text <input type="text" id="w-text" value="hello"></label>
+      <label>Write concern
+        <select id="w-concern">
+          <option value="1">w=1 (primary only)</option>
+          <option value="2">w=2 (primary + 1 secondary)</option>
+          <option value="majority">w=majority</option>
+        </select>
+      </label>
+      <button id="write-btn">Insert</button>
+    </div>
+    <pre id="write-output"></pre>
+  </section>
+
+  <section class="panel">
+    <h2>3. Read with different read preferences</h2>
+    <div class="row">
+      <label>Read preference
+        <select id="r-pref">
+          <option value="primary">primary</option>
+          <option value="secondaryPreferred">secondaryPreferred</option>
+          <option value="secondary">secondary</option>
+          <option value="nearest">nearest</option>
+        </select>
+      </label>
+      <button id="read-btn">Read messages</button>
+      <button class="secondary" id="read-normal-btn">Read via normal repository (always primary)</button>
+    </div>
+    <pre id="read-output">[]</pre>
+  </section>
+
+  <section class="panel">
+    <h2>4. Simulate a failover</h2>
+    <p class="hint">
+      This step happens outside the app, in your terminal: run
+      <code>docker stop replication-mongo1</code> (the current primary
+      priority 2 node) while repeatedly clicking "Read messages"
+      (secondaryPreferred) and "Insert" above. Reads should keep working
+      throughout (secondaries stay readable); writes will fail for a few
+      seconds during the election, then succeed again once mongo2 or
+      mongo3 is elected primary. Check status afterward - the surviving
+      node should now show PRIMARY. Run <code>docker start
+      replication-mongo1</code> to bring it back as a secondary.
+    </p>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

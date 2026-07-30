@@ -33,7 +33,7 @@ Docker Compose.
 | 06 | [Transactions & Consistency](06-transactions/) | ✅ available | Multi-document ACID transactions, `@Transactional`, read/write concerns, optimistic locking |
 | 07 | [Schema Validation](07-schema-validation/) | ✅ available | Collection-level JSON Schema validation, Bean Validation, custom converters |
 | 08 | [Text & Geo Search](08-text-geo-search/) | ✅ available | `$text` search indexes, geospatial queries (`$geoNear`, `$geoWithin`) |
-| 09 | Replication | planned | Local 3-node replica set, read preference/write concern, failover |
+| 09 | [Replication](09-replication/) | ✅ available | Local 3-node replica set, read preference/write concern, failover |
 | 10 | Sharding | planned | Shard keys, chunk distribution (conceptual + optional local cluster) |
 | 11 | Change Streams & Reactive | planned | Change streams, `ReactiveMongoRepository` + WebFlux |
 | 12 | Security | planned | Authentication (SCRAM), roles/users, field-level encryption overview |
