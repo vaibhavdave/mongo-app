@@ -1,0 +1,131 @@
+# The real thing: a minimal sharded cluster - one config server, two
+# single-node shards, and a mongos router. ~6 containers, resource-heavy
+# compared to every other module in this series. Optional - only run this
+# if you want to see actual shard distribution in explain() output;
+# everything else in the app works fine against the plain docker-compose.yml
+# too.
+#
+# Run with: docker compose -f docker-compose.sharded.yml up -d
+# Then check mongo-cluster-init logs until it reports "Sharding setup complete.":
+#   docker compose -f docker-compose.sharded.yml logs mongo-cluster-init
+#
+# The app's application.yml points at localhost:27017 regardless of which
+# compose file is running - here, that port is mongos, not a plain mongod.
+services:
+  configsvr:
+    image: mongo:7.0
+    container_name: sharding-configsvr
+    command: ["--configsvr", "--replSet", "configrs", "--port", "27019", "--bind_ip_all"]
+    volumes:
+      - sharding_configsvr_data:/data/db
+    healthcheck:
+      test: echo "db.adminCommand('ping')" | mongosh --port 27019 --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  shard1:
+    image: mongo:7.0
+    container_name: sharding-shard1
+    command: ["--shardsvr", "--replSet", "shard1rs", "--port", "27018", "--bind_ip_all"]
+    volumes:
+      - sharding_shard1_data:/data/db
+    healthcheck:
+      test: echo "db.adminCommand('ping')" | mongosh --port 27018 --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  shard2:
+    image: mongo:7.0
+    container_name: sharding-shard2
+    command: ["--shardsvr", "--replSet", "shard2rs", "--port", "27020", "--bind_ip_all"]
+    volumes:
+      - sharding_shard2_data:/data/db
+    healthcheck:
+      test: echo "db.adminCommand('ping')" | mongosh --port 27020 --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  init-configrs:
+    image: mongo:7.0
+    depends_on:
+      configsvr:
+        condition: service_healthy
+    volumes:
+      - ./mongo-init:/mongo-init
+    command: mongosh --host configsvr:27019 /mongo-init/init-configrs.js
+    restart: "no"
+
+  init-shard1rs:
+    image: mongo:7.0
+    depends_on:
+      shard1:
+        condition: service_healthy
+    volumes:
+      - ./mongo-init:/mongo-init
+    command: mongosh --host shard1:27018 /mongo-init/init-shard1rs.js
+    restart: "no"
+
+  init-shard2rs:
+    image: mongo:7.0
+    depends_on:
+      shard2:
+        condition: service_healthy
+    volumes:
+      - ./mongo-init:/mongo-init
+    command: mongosh --host shard2:27020 /mongo-init/init-shard2rs.js
+    restart: "no"
+
+  mongos:
+    image: mongo:7.0
+    container_name: sharding-mongos
+    command: ["mongos", "--configdb", "configrs/configsvr:27019", "--bind_ip_all", "--port", "27017"]
+    ports:
+      - "27017:27017"
+    depends_on:
+      init-configrs:
+        condition: service_completed_successfully
+      init-shard1rs:
+        condition: service_completed_successfully
+      init-shard2rs:
+        condition: service_completed_successfully
+    healthcheck:
+      test: echo "db.adminCommand('ping')" | mongosh --port 27017 --quiet
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+  mongo-cluster-init:
+    image: mongo:7.0
+    depends_on:
+      mongos:
+        condition: service_healthy
+    volumes:
+      - ./mongo-init:/mongo-init
+    command: mongosh --host mongos:27017 /mongo-init/init-add-shards.js
+    restart: "no"
+
+  mongo-express:
+    image: mongo-express:1.0
+    container_name: sharding-mongo-express
+    depends_on:
+      mongo-cluster-init:
+        condition: service_completed_successfully
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongos
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH: "false"
+    restart: unless-stopped
+
+volumes:
+  sharding_configsvr_data:
+  sharding_shard1_data:
+  sharding_shard2_data:

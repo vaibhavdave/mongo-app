@@ -1,0 +1,30 @@
+# Default, lightweight compose: a single plain mongod, just so you can
+# run the app and explore its API/UI without committing to the full
+# sharded cluster. Nothing is actually sharded here - explain() will show
+# a single-node plan, not per-shard distribution. For the real thing, see
+# docker-compose.sharded.yml (heavier, ~6 containers).
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: sharding-mongodb-simple
+    ports:
+      - "27017:27017"
+    volumes:
+      - sharding_simple_mongo_data:/data/db
+    restart: unless-stopped
+
+  mongo-express:
+    image: mongo-express:1.0
+    container_name: sharding-mongo-express-simple
+    depends_on:
+      - mongodb
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH: "false"
+    restart: unless-stopped
+
+volumes:
+  sharding_simple_mongo_data:

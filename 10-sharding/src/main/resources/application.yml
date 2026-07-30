@@ -1,0 +1,18 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: 10-sharding
+  data:
+    mongodb:
+      # Works unchanged against either docker-compose.yml (a single plain
+      # mongod - fine for exploring the API, but nothing is actually
+      # sharded) or docker-compose.sharded.yml (a real sharded cluster,
+      # where this same port is mongos, the query router). See the
+      # README for which one to use.
+      uri: mongodb://localhost:27017/shardeddb
+
+logging:
+  level:
+    org.springframework.data.mongodb.core.MongoTemplate: DEBUG
