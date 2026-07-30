@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>07 - Schema Validation</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 07 &middot; Schema Validation</h1>
+  <p>Collection-level $jsonSchema validation vs. application-level Bean Validation, plus a custom Money converter (BigDecimal &harr; Decimal128).</p>
+  <p class="links">
+    <a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a>
+    - try inserting an invalid document directly there (e.g. remove "category") and watch MongoDB itself reject it.
+  </p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>1. Create a product (valid path, through this app)</h2>
+    <div class="row">
+      <label>SKU <input type="text" id="p-sku"></label>
+      <label>Name <input type="text" id="p-name"></label>
+      <label>Price amount <input type="number" id="p-amount" step="0.01" value="19.99"></label>
+      <label>Currency
+        <select id="p-currency">
+          <option>USD</option><option>EUR</option><option>GBP</option>
+        </select>
+      </label>
+      <label>Category
+        <select id="p-category">
+          <option>electronics</option><option>books</option><option>home</option><option>toys</option>
+        </select>
+      </label>
+      <button id="create-btn">Create</button>
+    </div>
+    <p id="create-error" class="error"></p>
+  </section>
+
+  <section class="panel">
+    <h2>2. Bypass Bean Validation, hit the database schema directly</h2>
+    <p class="hint">This sends a hand-built document missing "category" and "price" straight through the MongoDB driver, skipping this app's Product/@Valid entirely. It should still be rejected - by MongoDB, not by Java.</p>
+    <button id="raw-invalid-btn">Attempt invalid raw insert</button>
+    <pre id="raw-output"></pre>
+  </section>
+
+  <section class="panel">
+    <h2>3. Products</h2>
+    <button class="secondary" id="refresh-btn">Refresh</button>
+    <pre id="products-output">[]</pre>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>

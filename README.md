@@ -31,7 +31,7 @@ Docker Compose.
 | 04 | [Indexing & Performance](04-indexing/) | ✅ available | Single/compound/unique/text/TTL indexes, `.explain()` |
 | 05 | [Aggregation Framework](05-aggregation/) | ✅ available | `$match`, `$group`, `$project`, `$lookup`, `$unwind`, `$facet`, `$bucket` |
 | 06 | [Transactions & Consistency](06-transactions/) | ✅ available | Multi-document ACID transactions, `@Transactional`, read/write concerns, optimistic locking |
-| 07 | Schema Validation | planned | Collection-level JSON Schema validation, Bean Validation, custom converters |
+| 07 | [Schema Validation](07-schema-validation/) | ✅ available | Collection-level JSON Schema validation, Bean Validation, custom converters |
 | 08 | Text & Geo Search | planned | `$text` search indexes, geospatial queries |
 | 09 | Replication | planned | Local 3-node replica set, read preference/write concern, failover |
 | 10 | Sharding | planned | Shard keys, chunk distribution (conceptual + optional local cluster) |
