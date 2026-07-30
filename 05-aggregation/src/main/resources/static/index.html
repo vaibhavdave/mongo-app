@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>05 - Aggregation Framework</title>
+<link rel="stylesheet" href="style.css">
+<style>
+  pre { background: #11182722; padding: 0.75rem; border-radius: 6px; overflow-x: auto; font-size: 0.85rem; max-height: 360px; }
+  .item-row { display: flex; gap: 0.5rem; margin-bottom: 0.5rem; }
+  .item-row input { width: auto; flex: 1; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Module 05 &middot; Aggregation Framework</h1>
+  <p>$match, $group, $project, $lookup, $unwind, $bucket, $facet - built as reporting endpoints.</p>
+  <p class="links"><a href="http://localhost:8081" target="_blank" rel="noopener">Mongo Express &#8599;</a></p>
+</header>
+
+<main>
+  <section class="panel">
+    <h2>1. Seed data</h2>
+    <div class="row">
+      <label>Customer name <input type="text" id="c-name"></label>
+      <label>Email <input type="text" id="c-email"></label>
+      <button id="create-customer">Create customer</button>
+    </div>
+
+    <div class="row" style="margin-top:0.75rem">
+      <label>Customer
+        <select id="o-customer"></select>
+      </label>
+    </div>
+    <div id="item-rows"></div>
+    <button class="secondary" id="add-item">+ Add item</button>
+    <button id="place-order">Place order</button>
+    <p id="order-error" class="error"></p>
+  </section>
+
+  <section class="panel">
+    <h2>2. Reports</h2>
+    <div class="row">
+      <button id="btn-category">$group by category</button>
+      <button id="btn-top-products">$group + $sort + $limit (top products)</button>
+      <button id="btn-lookup">$lookup orders &rarr; customers</button>
+      <button id="btn-bucket">$bucket price ranges</button>
+      <button id="btn-dashboard">$facet dashboard (all-in-one)</button>
+    </div>
+    <pre id="report-output">Pick a report above.</pre>
+  </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
